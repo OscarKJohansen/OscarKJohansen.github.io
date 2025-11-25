@@ -23,7 +23,7 @@
     </div>
   </nav>
 
- <main class="container my-4">
+<main class="container my-4">
 
   <!-- LOGIN-KORT -->
   <div id="auth-area" class="mb-4">
@@ -31,8 +31,11 @@
       <div class="card-body">
         <h2 class="h6 mb-3">Logg inn</h2>
         <p class="text-muted small mb-3">
-          Du må logge inn med skole-epost (<code>@stud.akademiet.no</code>) for å sende og se meldinger.
+          Du må logge inn med skole-epost (<code>@stud.akademiet.no</code>) og bekrefte den via e-post
+          før du kan sende og se meldinger.
         </p>
+
+        <!-- Selve innloggingsskjemaet -->
         <form id="login-form" class="row g-2">
           <div class="col-12 col-md-4">
             <input id="login-email" type="email" class="form-control" placeholder="din@stud.akademiet.no" required>
@@ -40,12 +43,16 @@
           <div class="col-12 col-md-4">
             <input id="login-password" type="password" class="form-control" placeholder="Passord" required>
           </div>
-          <div class="col-12 col-md-4 d-flex gap-2">
+          <div class="col-12 col-md-4 d-grid d-md-flex gap-2">
             <button class="btn btn-primary flex-grow-1" type="submit">Logg inn / registrer</button>
-            <button class="btn btn-outline-secondary" type="button" id="logout-btn">Logg ut</button>
           </div>
         </form>
-        <p id="login-status" class="mt-2 small text-muted">Ikke innlogget.</p>
+
+        <!-- Status + logg ut -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <p id="login-status" class="small text-muted mb-0">Ikke innlogget.</p>
+          <button class="btn btn-outline-secondary btn-sm d-none" type="button" id="logout-btn">Logg ut</button>
+        </div>
       </div>
     </div>
   </div>
@@ -66,13 +73,15 @@
             <form id="form" class="needs-validation" novalidate>
               <div class="mb-3">
                 <label class="form-label" for="name">Navn</label>
-                <input id="name" class="form-control" minlength="2" maxlength="30" required placeholder="F.eks. Sara">
-                <div class="invalid-feedback">Skriv inn navnet ditt (2–30 tegn).</div>
+                <!-- Navnet fylles automatisk ut og låses etter første gang -->
+                <input id="name" class="form-control bg-light" minlength="2" maxlength="30" required readonly>
+                <div class="invalid-feedback">Navnet ditt fylles inn automatisk etter innlogging.</div>
+                <div class="form-text">Navnet er knyttet til brukeren din og kan ikke endres her.</div>
               </div>
               <div class="mb-3">
                 <label class="form-label" for="content">Kort melding</label>
                 <input id="content" class="form-control" maxlength="140" required placeholder="Hei verden! (maks 140 tegn)">
-                <div class="invalid-feedback">Skriv en kort melding (maks 140 tegn).</div>
+                <div class="invalid-feedback">Skriv en kortmelding (maks 140 tegn).</div>
               </div>
               <button class="btn btn-primary w-100" type="submit">Lagre</button>
               <div id="status" class="form-text mt-2 muted">Klar</div>
@@ -98,6 +107,7 @@
 </main>
 
 
+
   <!-- Laster Supabase-biblioteket som gjør det mulig å kommunisere med databasen -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -109,6 +119,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <!-- Supabase-bibliotek -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -137,8 +149,9 @@
   const statusEl = document.getElementById('status');
   const countEl = document.getElementById('count');
 
-  // Holder på innlogget bruker
+  // Holder på innlogget bruker + display-navn
   let currentUser = null;
+  let displayName = null;
 
   // Gjør tekst trygg for visning (hindrer HTML-injeksjon)
   function esc(s) {
@@ -201,14 +214,64 @@
     return clean.endsWith(domain);
   }
 
-  // Oppdater UI basert på om bruker er innlogget eller ikke
+  // Sørg for at brukeren har et display-navn lagret i metadata
+  async function ensureDisplayName() {
+    if (!currentUser) return;
+
+    let metaName = currentUser.user_metadata?.display_name;
+    if (metaName && metaName.trim().length >= 2 && metaName.trim().length <= 30) {
+      displayName = metaName.trim();
+      nameInput.value = displayName;
+      return;
+    }
+
+    // Spør bruker om navn første gang
+    while (true) {
+      const input = prompt('Hva vil du hete når du sender meldinger? (2–30 tegn)');
+      if (!input) {
+        alert('Du må velge et navn for å bruke tjenesten.');
+        continue;
+      }
+      const trimmed = input.trim();
+      if (trimmed.length < 2 || trimmed.length > 30) {
+        alert('Navnet må være mellom 2 og 30 tegn.');
+        continue;
+      }
+
+      // Lagre i Supabase user metadata
+      const { data, error } = await supabase.auth.updateUser({
+        data: { display_name: trimmed }
+      });
+
+      if (error) {
+        alert('Kunne ikke lagre navnet: ' + error.message);
+        return;
+      }
+
+      currentUser = data.user;
+      displayName = trimmed;
+      nameInput.value = displayName;
+      break;
+    }
+  }
+
+  // UI basert på innlogging
   function updateAuthUI() {
     if (currentUser && hasAllowedDomain(currentUser.email)) {
       appArea.classList.remove('d-none');
-      loginStatusEl.textContent = 'Logget inn som ' + currentUser.email;
+
+      // Skjul innloggingsskjemaet, vis bare status + logg ut
+      loginForm.classList.add('d-none');
+      logoutBtn.classList.remove('d-none');
+      loginStatusEl.textContent = 'Du er logget inn som ' + currentUser.email;
     } else {
       appArea.classList.add('d-none');
+
+      loginForm.classList.remove('d-none');
+      logoutBtn.classList.add('d-none');
       loginStatusEl.textContent = 'Ikke innlogget. Logg inn med ' + ALLOWED_DOMAIN + '.';
+      nameInput.value = '';
+      displayName = null;
     }
   }
 
@@ -218,7 +281,18 @@
 
     const { data } = await supabase.auth.getUser();
     if (data?.user && hasAllowedDomain(data.user.email)) {
+
+      // Sjekk at e-posten er bekreftet
+      if (!data.user.confirmed_at) {
+        loginStatusEl.textContent = 'E-posten er ikke bekreftet. Sjekk e-posten din.';
+        await supabase.auth.signOut();
+        currentUser = null;
+        updateAuthUI();
+        return;
+      }
+
       currentUser = data.user;
+      await ensureDisplayName();
       updateAuthUI();
       await loadMessages();
     } else {
@@ -254,13 +328,16 @@
     });
 
     if (signInError) {
-      // Hvis ingen bruker / feil passord -> prøv å lage bruker
+      // Hvis bruker ikke finnes -> opprett ny og send verifisering
       if (signInError.message.includes('Invalid login credentials')) {
-        loginStatusEl.textContent = 'Fant ikke bruker, oppretter ny...';
+        loginStatusEl.textContent = 'Bruker finnes ikke – oppretter ny og sender verifisering...';
 
         const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
           email,
-          password
+          password,
+          options: {
+            emailRedirectTo: window.location.href
+          }
         });
 
         if (signUpError) {
@@ -268,23 +345,28 @@
           return;
         }
 
-        currentUser = signUpData.user;
-        updateAuthUI();
-        loginStatusEl.textContent = 'Bruker opprettet og logget inn som ' + currentUser.email;
-        form && (statusEl.textContent = 'Klar');
-        await loadMessages();
+        loginStatusEl.textContent =
+          'Bruker opprettet! Sjekk e-posten din for en bekreftelseslenke før du kan logge inn.';
         return;
       }
 
       // Andre feil
-      loginStatusEl.textContent = 'Feil ved innlogging: ' + signInError.message;
+      loginStatusEl.textContent = 'Innlogging feilet: ' + signInError.message;
       return;
     }
 
-    // Innlogging ok
+    // 2) Stop hvis e-posten ikke er bekreftet
+    if (!signInData.user.confirmed_at) {
+      loginStatusEl.textContent =
+        'E-posten er ikke bekreftet ennå. Sjekk innboksen din og klikk på lenken.';
+      await supabase.auth.signOut();
+      return;
+    }
+
+    // 3) Innlogging OK
     currentUser = signInData.user;
+    await ensureDisplayName();
     updateAuthUI();
-    loginStatusEl.textContent = 'Logget inn som ' + currentUser.email;
     await loadMessages();
   });
 
@@ -307,9 +389,16 @@
       return;
     }
 
-    const name = nameInput.value.trim();
+    if (!displayName) {
+      await ensureDisplayName();
+      if (!displayName) {
+        statusEl.textContent = 'Kunne ikke hente navnet ditt.';
+        return;
+      }
+    }
+
     const msg = contentInput.value.trim();
-    if (!name || !msg) return;
+    if (!msg) return;
 
     const submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
@@ -317,7 +406,7 @@
 
     const { error } = await supabase
       .from('messages')
-      .insert({ content: name + '::' + msg });
+      .insert({ content: displayName + '::' + msg });
 
     submitBtn.disabled = false;
 
@@ -326,10 +415,10 @@
       return;
     }
 
-    form.reset();
     form.classList.remove('was-validated');
+    contentInput.value = '';
     statusEl.textContent = 'Lagret!';
-    nameInput.focus();
+    contentInput.focus();
 
     await loadMessages();
   });
@@ -337,6 +426,7 @@
   // Start: sjekk om noen er logget inn fra før
   ensureAuthOnLoad();
 </script>
+
 
 
 
