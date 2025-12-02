@@ -29,6 +29,14 @@ const portfolioArea = document.getElementById("portfolio-area");
 const openMessages = document.getElementById("open-messages");
 const backToPortfolioBtn = document.getElementById("back-to-portfolio");
 
+const minSideBtn = document.getElementById("min-side-btn");
+const accountDrawer = document.getElementById("account-drawer");
+const accountDrawerOverlay = document.getElementById("account-drawer-overlay");
+const closeDrawerBtn = document.getElementById("close-drawer-btn");
+const drawerEmail = document.getElementById("drawer-email");
+const drawerRole = document.getElementById("drawer-role");
+const drawerLogoutBtn = document.getElementById("drawer-logout-btn");
+
 // State
 let currentUser = null;
 let displayName = null;
@@ -36,6 +44,8 @@ let currentRole = "user";
 
 // Badges
 function updateUserBadge() {
+  if (!userBadge || !roleBadge) return;
+
   if (currentUser?.email) {
     const isAdmin = currentRole === "admin";
     userBadge.textContent = currentUser.email;
@@ -50,6 +60,23 @@ function updateUserBadge() {
     userBadge.className = "badge rounded-pill text-bg-light";
     roleBadge.classList.add("d-none");
   }
+}
+
+function updateAccountDrawer() {
+  if (!drawerEmail || !drawerRole) return;
+  drawerEmail.textContent = currentUser?.email || "Ikke innlogget";
+  drawerRole.textContent = currentRole === "admin" ? "Admin" : "Bruker";
+  if (drawerLogoutBtn) drawerLogoutBtn.disabled = !currentUser;
+  if (minSideBtn) minSideBtn.disabled = !currentUser;
+}
+
+function openAccountDrawer() {
+  updateAccountDrawer();
+  accountDrawer?.classList.add("active");
+}
+
+function closeAccountDrawer() {
+  accountDrawer?.classList.remove("active");
 }
 
 // Utils
@@ -191,6 +218,7 @@ function updateAuthUI() {
   console.log("DEBUG user:", currentUser?.email);
   console.log("DEBUG role:", currentRole);
   updateUserBadge();
+  updateAccountDrawer();
 
   if (currentUser) {
     appArea.classList.add("d-none"); // ensure messaging hidden initially
@@ -313,11 +341,26 @@ loginForm.addEventListener("submit", async (e) => {
   await loadMessages();
 });
 
-logoutBtn.addEventListener("click", async () => {
+async function handleLogout() {
   await supabase.auth.signOut();
   currentUser = null;
   updateAuthUI();
   statusEl.textContent = "Du er logget ut.";
+  closeAccountDrawer();
+}
+
+logoutBtn.addEventListener("click", handleLogout);
+drawerLogoutBtn?.addEventListener("click", handleLogout);
+
+minSideBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (!currentUser) return;
+  openAccountDrawer();
+});
+closeDrawerBtn?.addEventListener("click", closeAccountDrawer);
+accountDrawerOverlay?.addEventListener("click", closeAccountDrawer);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeAccountDrawer();
 });
 
 form.addEventListener("submit", async (e) => {
@@ -349,58 +392,34 @@ form.addEventListener("submit", async (e) => {
     .from("messages")
     .insert({ message: msg, display_name: displayName });
 
-  if (error) console.error("Insert failed", error);
+  if (error) {
+    statusEl.textContent = "Kunne ikke lagre: " + error.message;
+  } else {
+    contentInput.value = "";
+    form.classList.remove("was-validated");
+    statusEl.textContent = "Melding sendt!";
+    await loadMessages();
+  }
+
   submitBtn.disabled = false;
-
-  if (error) {
-    statusEl.textContent = "Feil ved lagring: " + error.message;
-    return;
-  }
-
-  form.classList.remove("was-validated");
-  contentInput.value = "";
-  statusEl.textContent = "Lagret!";
-  contentInput.focus();
-
-  await loadMessages();
 });
 
-refreshBtn?.addEventListener("click", async () => {
-  await loadMessages();
-});
-
-clearBtn?.addEventListener("click", async () => {
-  if (currentRole !== "admin") return;
-  if (!confirm("Er du sikker på at du vil slette alle meldinger?")) return;
-
-  const { error } = await supabase.from("messages").delete().neq("id", 0);
-  if (error) {
-    alert("Feil ved sletting: " + error.message);
-    return;
-  }
-  await loadMessages();
-});
-
-// Show/hide helpers
-function showPortfolio() {
-  portfolioArea.classList.remove("d-none");
-  appArea.classList.add("d-none");
-}
-function showMessages() {
-  portfolioArea.classList.add("d-none");
-  appArea.classList.remove("d-none");
-  loadMessages();
-}
-
-// Wire clicks
 openMessages?.addEventListener("click", (e) => {
   e.preventDefault();
-  showMessages();
-});
-backToPortfolioBtn?.addEventListener("click", (e) => {
-  e.preventDefault();
-  showPortfolio();
+  if (!currentUser) {
+    statusEl.textContent = "Logg inn først.";
+    return;
+  }
+  portfolioArea.classList.add("d-none");
+  appArea.classList.remove("d-none");
 });
 
-// Start
+backToPortfolioBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  appArea.classList.add("d-none");
+  portfolioArea.classList.remove("d-none");
+});
+
+// Start the app by checking for an existing session
 ensureAuthOnLoad();
+//# sourceMappingURL=app.js.map

@@ -16,8 +16,14 @@
       <div class="container">
         <a class="navbar-brand fw-semibold" href="#">Portfolio</a>
         <div class="ms-auto d-flex align-items-center gap-2">
-          <span id="role-badge" class="badge rounded-pill">Bruker</span>
-          <span id="user-badge" class="badge rounded-pill">Gjest</span>
+          <button
+            id="min-side-btn"
+            type="button"
+            class="btn btn-primary btn-sm btn-rounded"
+            disabled
+          >
+            Min side
+          </button>
         </div>
       </div>
     </nav>
@@ -88,9 +94,7 @@
             >
               <div class="card-body">
                 <h3 class="h5 fw-semibold mb-2">Meldinger</h3>
-                <p class="text-muted mb-0">
-                  Klikk for å åpne meldings-appen.
-                </p>
+                <p class="text-muted mb-0">Klikk for å åpne meldings-appen.</p>
               </div>
             </a>
           </div>
@@ -199,9 +203,40 @@
           </div>
         </div>
       </section>
+
+      <div id="account-drawer" class="account-drawer">
+        <div id="account-drawer-overlay" class="account-drawer__overlay"></div>
+        <aside class="account-drawer__panel card-elev">
+          <div class="account-drawer__header">
+            <h2 class="h6 mb-0">Min side</h2>
+            <button
+              id="close-drawer-btn"
+              type="button"
+              class="btn btn-outline-secondary btn-sm btn-rounded"
+            >
+              &times;
+            </button>
+          </div>
+          <div class="account-drawer__body">
+            <p class="small text-muted mb-1">Innlogget som</p>
+            <div class="fw-semibold" id="drawer-email">Gjest</div>
+            <p class="small text-muted mt-3 mb-1">Rolle</p>
+            <div id="drawer-role">Bruker</div>
+            <button
+              id="drawer-logout-btn"
+              type="button"
+              class="btn btn-primary w-100 mt-auto btn-rounded"
+              disabled
+            >
+              Logg ut
+            </button>
+          </div>
+        </aside>
+      </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./app.js"></script>
   </body>
-</html>
+    <script src="./app.js"></script>
+  </body></html>
