@@ -24,6 +24,11 @@ const msgsEl = document.getElementById("msgs");
 const statusEl = document.getElementById("status");
 const countEl = document.getElementById("count");
 
+// Portfolio navigation refs
+const portfolioArea = document.getElementById("portfolio-area");
+const openMessages = document.getElementById("open-messages");
+const backToPortfolioBtn = document.getElementById("back-to-portfolio");
+
 // State
 let currentUser = null;
 let displayName = null;
@@ -107,18 +112,16 @@ async function ensureDisplayName() {
   if (metaName && metaName.trim().length >= 2 && metaName.trim().length <= 30) {
     displayName = metaName.trim();
     nameInput.value = displayName;
-    await supabase
-      .from("profiles")
-      .upsert(
-        [
-          {
-            id: currentUser.id,
-            email: currentUser.email,
-            display_name: displayName,
-          },
-        ],
-        { onConflict: "id" }
-      );
+    await supabase.from("profiles").upsert(
+      [
+        {
+          id: currentUser.id,
+          email: currentUser.email,
+          display_name: displayName,
+        },
+      ],
+      { onConflict: "id" }
+    );
     return;
   }
 
@@ -144,18 +147,16 @@ async function ensureDisplayName() {
       return;
     }
 
-    const { error: pErr } = await supabase
-      .from("profiles")
-      .upsert(
-        [
-          {
-            id: currentUser.id,
-            email: currentUser.email,
-            display_name: trimmed,
-          },
-        ],
-        { onConflict: "id" }
-      );
+    const { error: pErr } = await supabase.from("profiles").upsert(
+      [
+        {
+          id: currentUser.id,
+          email: currentUser.email,
+          display_name: trimmed,
+        },
+      ],
+      { onConflict: "id" }
+    );
     if (pErr) {
       alert("Kunne ikke lagre navnet i profiles: " + pErr.message);
       return;
@@ -190,8 +191,10 @@ function updateAuthUI() {
   console.log("DEBUG user:", currentUser?.email);
   console.log("DEBUG role:", currentRole);
   updateUserBadge();
+
   if (currentUser) {
-    appArea.classList.remove("d-none");
+    appArea.classList.add("d-none"); // ensure messaging hidden initially
+    portfolioArea.classList.remove("d-none");
     loginForm.classList.add("d-none");
     logoutBtn.classList.remove("d-none");
     loginStatusEl.textContent =
@@ -206,6 +209,7 @@ function updateAuthUI() {
       adminArea.classList.add("d-none");
     }
   } else {
+    portfolioArea.classList.add("d-none");
     appArea.classList.add("d-none");
     loginForm.classList.remove("d-none");
     logoutBtn.classList.add("d-none");
@@ -375,6 +379,27 @@ clearBtn?.addEventListener("click", async () => {
     return;
   }
   await loadMessages();
+});
+
+// Show/hide helpers
+function showPortfolio() {
+  portfolioArea.classList.remove("d-none");
+  appArea.classList.add("d-none");
+}
+function showMessages() {
+  portfolioArea.classList.add("d-none");
+  appArea.classList.remove("d-none");
+  loadMessages();
+}
+
+// Wire clicks
+openMessages?.addEventListener("click", (e) => {
+  e.preventDefault();
+  showMessages();
+});
+backToPortfolioBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  showPortfolio();
 });
 
 // Start

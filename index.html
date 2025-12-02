@@ -3,42 +3,32 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Supabase demo — Meldinger</title>
+    <title>Oscar Kvalo Johansen — Portfolio</title>
 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-
-    <!-- App styles -->
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <nav class="navbar navbar-expand-md bg-white border-bottom">
       <div class="container">
-        <a class="navbar-brand fw-semibold" href="#">Supabase demo</a>
+        <a class="navbar-brand fw-semibold" href="#">Portfolio</a>
         <div class="ms-auto d-flex align-items-center gap-2">
-          <span
-            id="role-badge"
-            class="badge rounded-pill text-bg-secondary d-none"
-            >Bruker</span
-          >
-          <span id="user-badge" class="badge rounded-pill text-bg-light"
-            >Gjest</span
-          >
+          <span id="role-badge" class="badge rounded-pill">Bruker</span>
+          <span id="user-badge" class="badge rounded-pill">Gjest</span>
         </div>
       </div>
     </nav>
 
     <main class="container my-4">
+      <!-- Login view -->
       <div id="auth-area" class="mb-4">
         <div class="card card-elev shadow-sm">
           <div class="card-body">
             <h2 class="h6 mb-3">Logg inn</h2>
-            <p class="text-muted small mb-3">
-              Logg inn med e-post og passord. Bekreft e-posten via lenken du får
-              tilsendt.
-            </p>
+            <p class="text-muted small mb-3">Logg inn med e-post og passord.</p>
 
             <form id="login-form" class="row g-2">
               <div class="col-12 col-md-4">
@@ -82,20 +72,66 @@
         </div>
       </div>
 
-      <div id="app-area" class="d-none">
+      <!-- Portfolio home (shown after login) -->
+      <section id="portfolio-area" class="d-none">
         <header class="text-center mb-4">
-          <h1 class="h4 fw-bold">Navn + kort melding</h1>
-          <p class="text-muted mb-0">Skriver til databasen og viser under.</p>
+          <h1 class="display-6 fw-bold">Oscar Kvalo Johansen</h1>
+          <p class="text-muted">Mine prosjekter</p>
+        </header>
+
+        <div class="row g-4">
+          <div class="col-12 col-md-6 col-lg-4">
+            <a
+              href="#"
+              id="open-messages"
+              class="card card-click card-elev shadow-sm text-decoration-none"
+            >
+              <div class="card-body">
+                <h3 class="h5 fw-semibold mb-2">Meldinger</h3>
+                <p class="text-muted mb-0">
+                  Klikk for å åpne meldings-appen.
+                </p>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card card-elev shadow-sm">
+              <div class="card-body">
+                <h3 class="h5 fw-semibold mb-2">Prosjekt 2</h3>
+                <p class="text-muted mb-0">Placeholder.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card card-elev shadow-sm">
+              <div class="card-body">
+                <h3 class="h5 fw-semibold mb-2">Prosjekt 3</h3>
+                <p class="text-muted mb-0">Placeholder.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Messaging app section -->
+      <section id="app-area" class="d-none">
+        <header class="d-flex align-items-center justify-content-between mb-3">
+          <h2 class="h5 fw-bold mb-0">Kortmeldinger</h2>
+          <button
+            id="back-to-portfolio"
+            class="btn btn-sm btn-outline-secondary"
+          >
+            Til hovedside
+          </button>
         </header>
 
         <section id="admin-area" class="d-none mb-4">
           <div
             class="alert alert-warning d-flex justify-content-between align-items-center"
           >
-            <div>
-              <strong>Admin:</strong> Du er logget inn som admin. Her kan du
-              gjøre admin-ting.
-            </div>
+            <div><strong>Admin:</strong> Du er logget inn som admin.</div>
             <div class="d-flex gap-2">
               <button id="refresh-btn" class="btn btn-sm btn-outline-dark">
                 Oppdater meldinger
@@ -107,11 +143,11 @@
           </div>
         </section>
 
-        <section class="row g-4">
+        <div class="row g-4">
           <div class="col-12 col-lg-5">
             <div class="card card-elev shadow-sm">
               <div class="card-body">
-                <h2 class="h6 mb-3">Send inn</h2>
+                <h3 class="h6 mb-3">Send inn</h3>
                 <form id="form" class="needs-validation" novalidate>
                   <div class="mb-3">
                     <label class="form-label" for="name">Navn</label>
@@ -124,10 +160,7 @@
                       readonly
                     />
                     <div class="invalid-feedback">
-                      Navnet ditt fylles inn automatisk etter innlogging.
-                    </div>
-                    <div class="form-text">
-                      Navnet er knyttet til brukeren din og kan ikke endres her.
+                      Navnet fylles inn etter innlogging.
                     </div>
                   </div>
                   <div class="mb-3">
@@ -139,9 +172,6 @@
                       required
                       placeholder="Hei verden! (maks 140 tegn)"
                     />
-                    <div class="invalid-feedback">
-                      Skriv en kortmelding (maks 140 tegn).
-                    </div>
                   </div>
                   <button class="btn btn-primary w-100" type="submit">
                     Lagre
@@ -158,7 +188,7 @@
                 <div
                   class="d-flex align-items-center justify-content-between mb-2"
                 >
-                  <h2 class="h6 mb-0">Meldinger</h2>
+                  <h3 class="h6 mb-0">Meldinger</h3>
                   <span class="badge text-bg-light"
                     ><span id="count">0</span> stk</span
                   >
@@ -167,12 +197,11 @@
               </div>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- App script -->
     <script src="./app.js"></script>
   </body>
 </html>
