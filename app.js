@@ -4,6 +4,7 @@ const SUPABASE_ANON_KEY = "sb_publishable_mdoTv5Opu_0idPCaV64_6A_nIegPRg1";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // UI refs
+const authArea = document.getElementById("auth-area");
 const adminArea = document.getElementById("admin-area");
 const refreshBtn = document.getElementById("refresh-btn");
 const clearBtn = document.getElementById("clear-btn");
@@ -221,15 +222,9 @@ function updateAuthUI() {
   updateAccountDrawer();
 
   if (currentUser) {
+    authArea.classList.add("d-none");
     appArea.classList.add("d-none"); // ensure messaging hidden initially
     portfolioArea.classList.remove("d-none");
-    loginForm.classList.add("d-none");
-    logoutBtn.classList.remove("d-none");
-    loginStatusEl.textContent =
-      "Du er logget inn som " +
-      currentUser.email +
-      " – rolle: " +
-      (currentRole === "admin" ? "Admin" : "Bruker");
 
     if (currentRole === "admin") {
       adminArea.classList.remove("d-none");
@@ -237,6 +232,7 @@ function updateAuthUI() {
       adminArea.classList.add("d-none");
     }
   } else {
+    authArea.classList.remove("d-none");
     portfolioArea.classList.add("d-none");
     appArea.classList.add("d-none");
     loginForm.classList.remove("d-none");
