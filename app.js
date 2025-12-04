@@ -38,6 +38,18 @@ const drawerEmail = document.getElementById("drawer-email");
 const drawerRole = document.getElementById("drawer-role");
 const drawerLogoutBtn = document.getElementById("drawer-logout-btn");
 
+// Add these UI refs near the other refs
+const project2Card = document.getElementById("project2");
+const project2Area = document.getElementById("project2-area");
+const project2BackBtn = document.getElementById("project2-back-btn");
+const codePageContent = document.getElementById("code-page-content");
+// keep modal refs if you still use the modal elsewhere
+const codeModal = document.getElementById("code-modal");
+const codeModalOverlay = document.getElementById("code-modal-overlay");
+const codeModalClose = document.getElementById("code-modal-close");
+const codeModalTitle = document.getElementById("code-modal-title");
+const codeModalContent = document.getElementById("code-modal-content");
+
 // State
 let currentUser = null;
 let displayName = null;
@@ -455,6 +467,111 @@ backToPortfolioBtn?.addEventListener("click", (e) => {
   e.preventDefault();
   appArea.classList.add("d-none");
   portfolioArea.classList.remove("d-none");
+});
+
+// Insert this code among your other event listeners (near minSideBtn / backToPortfolioBtn)
+const pythonCode = `import random
+
+alle_dager = []
+
+def registrer_vaner(dagens_vaner):
+    antall_vaner = int(input("Hvor mange vaner vil du skrive inn i dag? "))
+    i = 0
+    while i < antall_vaner: 
+        vane_navn = input("Skriv inn navnet på vanen: ")
+        dagens_vaner.append({"navn": vane_navn, "fullført": False})
+        i = i + 1 
+
+def marker_fullførte_vaner(dagens_vaner):
+    index = 0
+    while index < len(dagens_vaner):
+        svar = input("Har du gjort '{}' i dag? Skriv ja eller nei: ".format(dagens_vaner[index]["navn"]))
+        if svar == "ja":
+            dagens_vaner[index]["fullført"] = True
+        else:
+            dagens_vaner[index]["fullført"] = False
+        index += 1
+
+def vis_status(dagens_vaner):
+    fullførte = 0
+    for vane in dagens_vaner:
+        if vane["fullført"] == True: 
+            fullførte += 1
+    totalt = len(dagens_vaner)
+    print("I dag har du klart {} av {} vaner".format(fullførte, totalt))
+
+def gi_motivasjon(antall=1):
+    sitater = [
+        "Små steg hver dag gir store resultater",
+        "Det du gjør teller, fortsett så godt du kan",
+        "Selv små seire er viktige",
+        "Tro på deg selv, du klarer mer enn du tror"
+    ]
+    i = 0
+    while i < antall: 
+        tilfeldig_index = random.randint(0, len(sitater)-1)
+        print("Motivasjon {}: {}".format(i+1, sitater[tilfeldig_index]))
+        i += 1
+
+fortsett_program = True
+
+while fortsett_program == True: 
+    dagens_vaner = []
+    dag_navn = input("Hva heter dagen i dag? ")
+    alle_dager.append({"dag": dag_navn, "vaner": dagens_vaner})
+    
+    registrer_vaner(dagens_vaner)
+    marker_fullførte_vaner(dagens_vaner)
+    vis_status(dagens_vaner)
+    
+    gi_motivasjon(1)
+    
+    svar = input("Vil du skrive inn flere vaner senere? ja/nei: ")
+    if svar != "ja":
+        fortsett_program = False
+        print("Programmet avsluttes for i dag")
+
+print("\\nHer er historikken din over alle dager:")
+for dag in alle_dager:
+    fullførte = 0
+    totalt = len(dag["vaner"])
+    for vane in dag["vaner"]:
+        if vane["fullført"] == True:
+            fullførte += 1
+    print("{}: {}/{} vaner fullført".format(dag["dag"], fullførte, totalt))
+`;
+
+// Open modal when clicking Project 2
+project2Card?.addEventListener("click", (e) => {
+  e.preventDefault();
+  // open a dedicated page-like view (hide portfolio/messages)
+  portfolioArea.classList.add("d-none");
+  appArea.classList.add("d-none");
+  project2Area?.classList.remove("d-none");
+  if (codePageContent) codePageContent.textContent = pythonCode;
+  window.scrollTo(0, 0);
+});
+
+// Back button to return to portfolio (like Meldinger -> Portfolio)
+project2BackBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  project2Area?.classList.add("d-none");
+  portfolioArea.classList.remove("d-none");
+  window.scrollTo(0, 0);
+});
+
+// Close handlers
+function closeCodeModal() {
+  if (!codeModal) return;
+  codeModal.classList.add("d-none");
+  document.body.style.overflow = "";
+  // keep content if you want; clear to free memory:
+  codeModalContent.textContent = "";
+}
+codeModalClose?.addEventListener("click", closeCodeModal);
+codeModalOverlay?.addEventListener("click", closeCodeModal);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeCodeModal();
 });
 
 // Start the app by checking for an existing session
