@@ -479,26 +479,29 @@ def registrer_vaner(dagens_vaner):
     i = 0
     while i < antall_vaner: 
         vane_navn = input("Skriv inn navnet på vanen: ")
-        dagens_vaner.append({"navn": vane_navn, "fullført": False})
+        #Legger til en ny vane i listen. Jeg bruker en dictionary for å lagre både navnet og om den er fullført
+        dagens_vaner.append({f"navn": vane_navn, f"fullført": False})
         i = i + 1 
 
 def marker_fullførte_vaner(dagens_vaner):
     index = 0
     while index < len(dagens_vaner):
-        svar = input("Har du gjort '{}' i dag? Skriv ja eller nei: ".format(dagens_vaner[index]["navn"]))
+        svar = input(f"Har du gjort '{dagens_vaner[index][f'navn']}' i dag? Skriv ja eller nei: ")
         if svar == "ja":
+            # Sjekker om brukeren skrev ja. Hvis ja blir det True, hvis nei blir det False
             dagens_vaner[index]["fullført"] = True
         else:
             dagens_vaner[index]["fullført"] = False
         index += 1
 
 def vis_status(dagens_vaner):
+    #Går gjennom alle vanene og teller hvor mange som er fullført
     fullførte = 0
     for vane in dagens_vaner:
         if vane["fullført"] == True: 
             fullførte += 1
     totalt = len(dagens_vaner)
-    print("I dag har du klart {} av {} vaner".format(fullførte, totalt))
+    print(f"I dag har du klart {fullførte} av {totalt} vaner")
 
 def gi_motivasjon(antall=1):
     sitater = [
@@ -518,7 +521,8 @@ fortsett_program = True
 while fortsett_program == True: 
     dagens_vaner = []
     dag_navn = input("Hva heter dagen i dag? ")
-    alle_dager.append({"dag": dag_navn, "vaner": dagens_vaner})
+    #Lagrer hele dagen med dag navn og alle vanene den dagen
+    alle_dager.append({f"dag": dag_navn, "vaner": dagens_vaner})
     
     registrer_vaner(dagens_vaner)
     marker_fullførte_vaner(dagens_vaner)
@@ -531,14 +535,16 @@ while fortsett_program == True:
         fortsett_program = False
         print("Programmet avsluttes for i dag")
 
-print("\\nHer er historikken din over alle dager:")
+print("\nHer er historikken din over alle dager:")
+# For hver dag i alle_dager går jeg gjennom alle vanene og teller hvor mange som var fullført
 for dag in alle_dager:
     fullførte = 0
     totalt = len(dag["vaner"])
     for vane in dag["vaner"]:
         if vane["fullført"] == True:
             fullførte += 1
-    print("{}: {}/{} vaner fullført".format(dag["dag"], fullførte, totalt))
+    print(f"{dag['dag']}: {fullførte}/{totalt} vaner fullført")
+
 `;
 
 // Open modal when clicking Project 2
