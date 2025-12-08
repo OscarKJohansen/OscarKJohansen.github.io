@@ -50,6 +50,12 @@ const codeModalClose = document.getElementById("code-modal-close");
 const codeModalTitle = document.getElementById("code-modal-title");
 const codeModalContent = document.getElementById("code-modal-content");
 
+// New refs for project 3
+const project3Card = document.getElementById("project3");
+const project3Area = document.getElementById("project3-area");
+const project3BackBtn = document.getElementById("project3-back-btn");
+const project3Content = document.getElementById("project3-content");
+
 // State
 let currentUser = null;
 let displayName = null;
@@ -579,7 +585,141 @@ codeModalOverlay?.addEventListener("click", closeCodeModal);
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeCodeModal();
 });
+const project3Text = `
+# Innloggingssystem med Supabase
 
+## Hvordan jeg lagde det
+
+Jeg satt opp et innloggingssystem med Supabase, her er hva jeg gjorde 
+
+## 1. Lagde en profiles-tabell
+
+Først lagde jeg en tabell som kobler hver bruker til en rolle (admin eller vanlig bruker):
+
+\`\`\`sql
+create table if not exists profiles (
+  id uuid primary key references auth.users on delete cascade,
+  role text not null default 'user',
+  created_at timestamptz default now()
+);
+\`\`\`
+
+Tabellen lagrer:
+- id → brukerens unike ID fra Supabase Auth
+- role → "admin" eller "user"
+- created_at → når profilen ble laget
+
+## 2. Skrudde på RLS
+
+For at brukere bare skal kunne lese sin egen rad:
+
+\`\`\`sql
+alter table profiles enable row level security;
+
+create policy "read-own-profile"
+on profiles for select using (id = auth.uid());
+\`\`\`
+
+## 3. Automatisk profil ved registrering
+
+\`\`\`sql
+create or replace function public.handle_new_user()
+returns trigger as $$
+begin
+  insert into public.profiles (id, role)
+  values (
+    new.id,
+    case when lower(new.email) = lower('49johosc@stud.akademiet.no') then 'admin' else 'user' end
+  );
+  return new;
+end;
+$$ language plpgsql security definer;
+
+create trigger on_auth_user_created
+after insert on auth.users
+for each row execute function public.handle_new_user();
+\`\`\`
+
+## 4. JavaScript-koden
+
+Logg inn, eller lag bruker hvis den ikke finnes:
+
+\`\`\`javascript
+let { data: signInData, error: signInError } =
+  await supabase.auth.signInWithPassword({ email, password });
+
+if (signInError) {
+  const { data: signUpData, error: signUpError } =
+    await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: window.location.href },
+    });
+}
+\`\`\`
+
+Hent rollen:
+
+\`\`\`javascript
+async function loadProfileRole() {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", currentUser.id)
+    .single();
+  
+  currentRole = data?.role || "user";
+}
+\`\`\`
+
+Sjekk om bruker er innlogget ved oppstart:
+
+\`\`\`javascript
+async function ensureAuthOnLoad() {
+  const { data } = await supabase.auth.getUser();
+  if (data?.user) {
+    currentUser = data.user;
+    await loadProfileRole();
+    await loadMessages();
+  }
+}
+\`\`\`
+
+## 5. Hvordan alt fungerer
+
+1. Bruker skriver inn e-post og passord  
+2. Hvis brukeren finnes → logg inn  
+3. Hvis ikke → lag ny bruker  
+4. Hent rollen fra profiles  
+5. Hvis admin → vis admin-knapper  
+`;
+
+// Open project 3 page
+project3Card?.addEventListener("click", (e) => {
+  e.preventDefault();
+  portfolioArea.classList.add("d-none");
+  appArea.classList.add("d-none");
+  project3Area?.classList.remove("d-none");
+  if (project3Content) {
+    // Check if marked library is loaded
+    if (typeof marked !== "undefined") {
+      project3Content.innerHTML = marked.parse(project3Text);
+    } else {
+      // Fallback: show as plain text if marked isn't loaded
+      project3Content.innerHTML = `<pre>${esc(project3Text)}</pre>`;
+      console.warn("marked library not loaded");
+    }
+  }
+  window.scrollTo(0, 0);
+});
+
+// Back button for project 3
+project3BackBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  project3Area?.classList.add("d-none");
+  portfolioArea.classList.remove("d-none");
+  window.scrollTo(0, 0);
+});
 // Start the app by checking for an existing session
 ensureAuthOnLoad();
 //# sourceMappingURL=app.js.map
