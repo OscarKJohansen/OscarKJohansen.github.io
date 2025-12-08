@@ -56,6 +56,10 @@ const project3Area = document.getElementById("project3-area");
 const project3BackBtn = document.getElementById("project3-back-btn");
 const project3Content = document.getElementById("project3-content");
 
+const project4Card = document.getElementById("project4");
+const project4Area = document.getElementById("project4-area");
+const project4BackBtn = document.getElementById("project4-back-btn");
+
 // State
 let currentUser = null;
 let displayName = null;
@@ -717,6 +721,25 @@ project3Card?.addEventListener("click", (e) => {
 project3BackBtn?.addEventListener("click", (e) => {
   e.preventDefault();
   project3Area?.classList.add("d-none");
+  portfolioArea.classList.remove("d-none");
+  window.scrollTo(0, 0);
+});
+
+// Open project 4 page
+project4Card?.addEventListener("click", (e) => {
+  e.preventDefault();
+  portfolioArea.classList.add("d-none");
+  appArea.classList.add("d-none");
+  project3Area?.classList.add("d-none");
+  project2Area?.classList.add("d-none");
+  project4Area?.classList.remove("d-none");
+  window.scrollTo(0, 0);
+});
+
+// Back button for project 4
+project4BackBtn?.addEventListener("click", (e) => {
+  e.preventDefault();
+  project4Area?.classList.add("d-none");
   portfolioArea.classList.remove("d-none");
   window.scrollTo(0, 0);
 });

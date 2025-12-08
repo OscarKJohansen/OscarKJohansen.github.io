@@ -1,0 +1,56 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.container-header {
+  padding: 0 2%;
+}
+
+.btn.btn-primary {
+  background-color: white !important;
+  border-color: green !important;
+  color: green !important;
+}
+.card {
+  border: none !important;
+}
+/* Her valgte jeg å fjerne borderen som er rundt teksten. Fortsatt litt usikker på om det ser bedre ut eller ikke. 
+personlig mener jeg det passer design språket til siden bedre. */
+.btn.btn-primary:hover {
+  background-color: green !important;
+  color: white !important;
+}
+
+/* En hover for å igjen følge design språket til resten av siden. */
+/* Bytte farge på se kolleksjon og la til farge på borderen. Dette gjorde jeg for å fortsette å følge design språket til siden */
+
+.container-divs {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+}
+/* Jeg tenkte på om jeg skulle heller bruke justify-content center og bruke gap men landet på space-around */
+.navbar.navbar-expand-lg.bg-body-tertiary {
+  background-color: white !important;
+}
+
+.container-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2%;
+}
+/* Her er den ikke fikset til bunnen av skjermen hele tiden siden da går den over teksten */
+a {
+  text-decoration: none;
+  color: black;
+}
+.card-text {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+/* Her bruker jeg google fonten jeg fant jeg kan forandre på font-weight for å velge hvor tjukk teksten skal være */

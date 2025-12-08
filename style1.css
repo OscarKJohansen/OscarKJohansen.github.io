@@ -1,0 +1,75 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+/* Her får jeg en font for hele dokumentet */
+.container-header {
+  padding: 0 2%;
+}
+/* dette er for å gi padding fra venstre og høyre side slik at den ikke er helt intill siden. */
+.container-divs {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+}
+/* Dette er for å gi avstand mellom bildene i divsene. */
+.navbar.navbar-expand-lg.bg-body-tertiary {
+  background-color: white !important;
+}
+/* Gi en hvit bakgrunn til navbaren. Jeg tok til important for å overskrive bootstrap */
+.div1 {
+  display: flex;
+  padding: 0 2%;
+}
+.div1 img {
+  width: 100%;
+  height: auto;
+}
+.div1:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
+}
+/* La til en hover funksjon slik at når du legger musen over så zoomer bildet inn */
+.div2 {
+  display: flex;
+  padding: 0 2%;
+}
+.div2 img {
+  width: 100%;
+  height: auto;
+}
+.div2:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
+}
+.div3 {
+  display: flex;
+  padding: 0 2%;
+}
+.div3 img {
+  width: 100%;
+  height: auto;
+}
+.div3:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
+}
+/* tre diver med img for bilder, jeg tok width 100% for å fylle ut diven og height auto. Jeg ga de litt padding fra venstre og høyre side*/
+
+.container-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2% 2.6%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+a {
+  text-decoration: none;
+  color: black;
+}
+/* Dette er for å feste footeren til bunnen av siden, og gi litt padding rundt teksten */
