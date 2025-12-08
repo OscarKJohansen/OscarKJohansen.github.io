@@ -100,6 +100,16 @@
             </div>
           </div>
 
+          <!-- Divider -->
+          <div class="col-12">
+            <hr class="my-4" />
+          </div>
+
+          <!-- Supabase Projects Section -->
+          <div class="col-12">
+            <h2 class="h5 fw-semibold mt-4 mb-3">Supabase Prosjekt</h2>
+          </div>
+
           <div class="col-12 col-md-6 col-lg-4">
             <div
               id="project3"
@@ -117,13 +127,56 @@
 
           <div class="col-12 col-md-6 col-lg-4">
             <div
+              id="project3-kompetanse"
+              class="card card-elev shadow-sm"
+              style="cursor: pointer"
+            >
+              <div class="card-body">
+                <h3 class="h5 fw-semibold mb-2">Kompetansemål jeg utfylte</h3>
+                <p class="text-muted mb-0">Klikk for å lese mer</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="col-12">
+            <hr class="my-4" />
+          </div>
+
+          <!-- Bootstrap og Flexbox Projects Section -->
+          <div class="col-12">
+            <h2 class="h5 fw-semibold mt-4 mb-3">
+              Bootstrap og Flexbox Prosjekt
+            </h2>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4">
+            <div
               id="project4"
               class="card card-elev shadow-sm"
               style="cursor: pointer"
             >
               <div class="card-body">
-                <h3 class="h5 fw-semibold mb-2">Nettsiden min jeg brukte bootstrap og flexbox til</h3>
+                <h3 class="h5 fw-semibold mb-2">
+                  Nettsiden min jeg brukte bootstrap og flexbox til
+                </h3>
                 <p class="text-muted mb-0">Klikk for å se prosjektet</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4">
+            <div
+              id="project5"
+              class="card card-elev shadow-sm"
+              style="cursor: pointer"
+            >
+              <div class="card-body">
+                <h3 class="h5 fw-semibold mb-2">
+                  Hvilke kompetanse mål jeg utfylte med bootstrap og flexbox
+                  prosjektet
+                </h3>
+                <p class="text-muted mb-0">Trykk her for å åpne prosjektet</p>
               </div>
             </div>
           </div>
@@ -260,10 +313,76 @@
         </div>
       </section>
 
+      <!-- Project 3 Kompetanse page -->
+      <section id="project3-kompetanse-area" class="d-none">
+        <header class="d-flex align-items-center justify-content-between mb-3">
+          <h2 class="h5 fw-bold mb-0">Kompetansemål - Innloggingssystem</h2>
+          <button
+            id="project3-kompetanse-back-btn"
+            class="btn btn-sm btn-outline-secondary"
+          >
+            Tilbake
+          </button>
+        </header>
+
+        <div class="card card-elev">
+          <div class="card-body">
+            <div id="project3-kompetanse-content" style="line-height: 1.6">
+              <div class="mb-4">
+                <h3 class="h6 fw-semibold mb-2">Sikkerhet og Administrasjon</h3>
+                <ul class="list-unstyled ps-3">
+                  <li class="mb-2">
+                    <strong>•</strong> Administrere brukere, tilganger og
+                    rettigheter i relevante systemer
+                  </li>
+                  <li class="mb-2">
+                    <strong>•</strong> Planlegge og dokumentere arbeidsprosesser
+                    og IT-løsninger
+                  </li>
+                  <li class="mb-2">
+                    <strong>•</strong> Gjennomføre risikoanalyse av nettverk og
+                    tjenester i en virksomhets systemer og foreslå tiltak for å
+                    redusere risikoen
+                  </li>
+                </ul>
+              </div>
+
+              <div class="mb-4">
+                <h3 class="h6 fw-semibold mb-2">Datadrift og Implementering</h3>
+                <ul class="list-unstyled ps-3">
+                  <li class="mb-2">
+                    <strong>•</strong> Planlegge, drifte og implementere
+                    IT-løsninger som ivaretar informasjonssikkerhet og gjeldende
+                    regelverk for personvern
+                  </li>
+                  <li class="mb-2">
+                    <strong>•</strong> Forenkle og automatisere arbeidsprosesser
+                    i utvikling av IT-løsninger
+                  </li>
+                </ul>
+              </div>
+
+              <div class="mb-4">
+                <h3 class="h6 fw-semibold mb-2">Personvern og Etikk</h3>
+                <ul class="list-unstyled ps-3">
+                  <li class="mb-2">
+                    <strong>•</strong> Reflektere over og beskrive hvordan brudd
+                    på personvernet kan påvirke enkeltmennesker, virksomheter og
+                    samfunn
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Project 4 page (iframe view) -->
       <section id="project4-area" class="d-none">
         <header class="d-flex align-items-center justify-content-between mb-3">
-          <h2 class="h5 fw-bold mb-0">Nettsiden min jeg brukte bootstrap og flexbox til</h2>
+          <h2 class="h5 fw-bold mb-0">
+            Nettsiden min jeg brukte bootstrap og flexbox til
+          </h2>
           <button
             id="project4-back-btn"
             class="btn btn-sm btn-outline-secondary"
@@ -276,7 +395,7 @@
           <div class="card-body">
             <iframe
               id="project4-iframe"
-              src="index1.html"
+              src="./Bootstrap nettsiden/index1.html"
               style="
                 width: 100%;
                 height: 80vh;
@@ -284,6 +403,64 @@
                 border-radius: 0.5rem;
               "
             ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Project 5 page -->
+      <section id="project5-area" class="d-none">
+        <header class="d-flex align-items-center justify-content-between mb-3">
+          <h2 class="h5 fw-bold mb-0">Kompetanse mål - Bootstrap og Flexbox</h2>
+          <button
+            id="project5-back-btn"
+            class="btn btn-sm btn-outline-secondary"
+          >
+            Tilbake
+          </button>
+        </header>
+
+        <div class="card card-elev">
+          <div class="card-body">
+            <div id="project5-content" style="line-height: 1.6">
+              <div class="mb-4">
+                <h3 class="h6 fw-semibold mb-2">Drift</h3>
+                <ul class="list-unstyled ps-3">
+                  <li class="mb-2">
+                    <strong>•</strong> Forenkle og automatisere arbeidsprosesser
+                    i utvikling av IT-løsninger
+                  </li>
+                  <li class="mb-2">
+                    <strong>•</strong> Planlegge, drifte og implementere
+                    IT-løsninger som ivaretar informasjonssikkerhet og gjeldende
+                    regelverk for personvern
+                  </li>
+                </ul>
+              </div>
+
+              <div class="mb-4">
+                <h3 class="h6 fw-semibold mb-2">Utvikling</h3>
+                <ul class="list-unstyled ps-3">
+                  <li class="mb-2">
+                    <strong>•</strong> Beskrive og anvende relevante
+                    versjonskontrollsystemer i utviklingsprosjekter
+                  </li>
+                </ul>
+              </div>
+
+              <div class="mb-4">
+                <h3 class="h6 fw-semibold mb-2">Brukerstøtte</h3>
+                <ul class="list-unstyled ps-3">
+                  <li class="mb-2">
+                    <strong>•</strong> Feilsøke og rette feil ved hjelp av
+                    feilsøkingsstrategier og relevante rammeverk
+                  </li>
+                  <li class="mb-2">
+                    <strong>•</strong> Bruke og administrere samhandlingsverktøy
+                    som effektiviserer samarbeid og deling av informasjon
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </section>

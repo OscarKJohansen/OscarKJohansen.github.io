@@ -216,12 +216,12 @@ while fortsett_program == True:
 
 print("\\nHer er historikken din over alle dager:")
 for dag in alle_dager:
-    fullførte = 0
-    totalt = len(dag["vaner"])
+    fullførte = 0;
+    totalt = len(dag["vaner"]);
     for vane in dag["vaner"]:
         if vane["fullført"] == True:
-            fullførte += 1
-    print("{}: {}/{} vaner fullført".format(dag["dag"], fullførte, totalt))
+            fullførte += 1;
+    print("{}: {}/{} vaner fullført".format(dag["dag"], fullførte, totalt));
 `;
 
 document.getElementById("project2")?.addEventListener("click", (e) => {
@@ -350,6 +350,14 @@ async function ensureAuthOnLoad() {
 3. Hvis ikke → lag ny bruker  
 4. Hent rollen fra profiles  
 5. Hvis admin → vis admin-knapper  
+
+
+## 6. Hvilke kompetansemål
+1. administrere brukere, tilganger og rettigheter i relevante systemer
+2. utforske og beskrive relevante nettverksprotokoller, nettverkstjenester og serverroller
+3. planlegge og dokumentere arbeidsprosesser og IT-løsninger
+4. utforske og beskrive relevante nettverksprotokoller, nettverkstjenester og serverroller
+5. gjennomføre risikoanalyse av nettverk og tjenester i en virksomhets systemer og foreslå tiltak for å redusere risikoen
 `;
 
 document.getElementById("project3")?.addEventListener("click", (e) => {
@@ -377,6 +385,34 @@ document.getElementById("project3-back-btn")?.addEventListener("click", (e) => {
   window.scrollTo(0, 0);
 });
 
+// Project 3 Kompetanse
+document
+  .getElementById("project3-kompetanse")
+  ?.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.getElementById("portfolio-area")?.classList.add("d-none");
+    document.getElementById("app-area")?.classList.add("d-none");
+    document.getElementById("project2-area")?.classList.add("d-none");
+    document.getElementById("project3-area")?.classList.add("d-none");
+    document.getElementById("project4-area")?.classList.add("d-none");
+    document.getElementById("project5-area")?.classList.add("d-none");
+    document
+      .getElementById("project3-kompetanse-area")
+      ?.classList.remove("d-none");
+    window.scrollTo(0, 0);
+  });
+
+document
+  .getElementById("project3-kompetanse-back-btn")
+  ?.addEventListener("click", (e) => {
+    e.preventDefault();
+    document
+      .getElementById("project3-kompetanse-area")
+      ?.classList.add("d-none");
+    document.getElementById("portfolio-area")?.classList.remove("d-none");
+    window.scrollTo(0, 0);
+  });
+
 // Project 4
 document.getElementById("project4")?.addEventListener("click", (e) => {
   e.preventDefault();
@@ -391,6 +427,25 @@ document.getElementById("project4")?.addEventListener("click", (e) => {
 document.getElementById("project4-back-btn")?.addEventListener("click", (e) => {
   e.preventDefault();
   document.getElementById("project4-area")?.classList.add("d-none");
+  document.getElementById("portfolio-area")?.classList.remove("d-none");
+  window.scrollTo(0, 0);
+});
+
+// Project 5
+document.getElementById("project5")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  document.getElementById("portfolio-area")?.classList.add("d-none");
+  document.getElementById("app-area")?.classList.add("d-none");
+  document.getElementById("project2-area")?.classList.add("d-none");
+  document.getElementById("project3-area")?.classList.add("d-none");
+  document.getElementById("project4-area")?.classList.add("d-none");
+  document.getElementById("project5-area")?.classList.remove("d-none");
+  window.scrollTo(0, 0);
+});
+
+document.getElementById("project5-back-btn")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  document.getElementById("project5-area")?.classList.add("d-none");
   document.getElementById("portfolio-area")?.classList.remove("d-none");
   window.scrollTo(0, 0);
 });
