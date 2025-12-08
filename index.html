@@ -19,16 +19,17 @@
   <body>
     <nav class="navbar navbar-expand-md bg-white border-bottom">
       <div class="container">
-        <a class="navbar-brand fw-semibold" href="#">Portfolio</a>
-        <div class="ms-auto d-flex align-items-center gap-2">
-          <button
-            id="min-side-btn"
-            type="button"
-            class="btn btn-primary btn-sm btn-rounded"
-            disabled
+        <span class="navbar-brand">Oscar Kvalo Johansen</span>
+        <div class="ms-auto">
+          <span id="user-badge" class="badge rounded-pill text-bg-light me-2">
+            Gjest
+          </span>
+          <span
+            id="role-badge"
+            class="badge rounded-pill text-bg-secondary d-none"
           >
-            Min side
-          </button>
+            Bruker
+          </span>
         </div>
       </div>
     </nav>
@@ -36,72 +37,54 @@
     <main class="container my-4">
       <!-- Login view -->
       <div id="auth-area" class="mb-4">
-        <div class="card card-elev shadow-sm">
+        <div class="card card-elev">
           <div class="card-body">
-            <h2 class="h6 mb-3">Logg inn</h2>
-            <p class="text-muted small mb-3">Logg inn med e-post og passord.</p>
-
-            <form id="login-form" class="row g-2">
-              <div class="col-12 col-md-4">
+            <h2 class="h5 fw-semibold mb-3">Logg inn</h2>
+            <form id="login-form">
+              <div class="mb-3">
+                <label for="login-email" class="form-label">E-post</label>
                 <input
-                  id="login-email"
                   type="email"
                   class="form-control"
-                  placeholder="din@epost.no"
+                  id="login-email"
                   required
                 />
               </div>
-              <div class="col-12 col-md-4">
+              <div class="mb-3">
+                <label for="login-password" class="form-label">Passord</label>
                 <input
-                  id="login-password"
                   type="password"
                   class="form-control"
-                  placeholder="Passord"
+                  id="login-password"
                   required
                 />
               </div>
-              <div class="col-12 col-md-4 d-grid d-md-flex gap-2">
-                <button class="btn btn-primary flex-grow-1" type="submit">
-                  Logg inn / registrer
-                </button>
-              </div>
-            </form>
-
-            <div class="d-flex justify-content-between align-items-center mt-3">
-              <p id="login-status" class="small text-muted mb-0">
-                Ikke innlogget.
-              </p>
-              <button
-                class="btn btn-outline-secondary btn-sm d-none"
-                type="button"
-                id="logout-btn"
-              >
-                Logg ut
+              <button type="submit" class="btn btn-primary w-100">
+                Logg inn med e-post og passord
               </button>
-            </div>
+            </form>
+            <div id="login-status" class="mt-2 text-muted small"></div>
           </div>
         </div>
       </div>
 
       <!-- Portfolio home (shown after login) -->
       <section id="portfolio-area" class="d-none">
-        <header class="text-center mb-4">
-          <h1 class="display-6 fw-bold">Oscar Kvalo Johansen</h1>
-          <p class="text-muted">Mine prosjekter</p>
+        <header class="d-flex align-items-center justify-content-between mb-4">
+          <h1 class="display-6 fw-bold mb-0">Portfolio</h1>
+          <button id="min-side-btn" class="btn btn-primary btn-rounded">
+            Min side
+          </button>
         </header>
 
-        <div class="row g-4">
+        <div class="row g-3">
           <div class="col-12 col-md-6 col-lg-4">
-            <a
-              href="#"
-              id="open-messages"
-              class="card card-click card-elev shadow-sm text-decoration-none"
-            >
+            <div id="open-messages" class="card card-click shadow-sm">
               <div class="card-body">
                 <h3 class="h5 fw-semibold mb-2">Meldinger</h3>
-                <p class="text-muted mb-0">Klikk for å åpne meldings-appen.</p>
+                <p class="text-muted mb-0">Se og send meldinger</p>
               </div>
-            </a>
+            </div>
           </div>
 
           <div class="col-12 col-md-6 col-lg-4">
@@ -111,8 +94,8 @@
               style="cursor: pointer"
             >
               <div class="card-body">
-                <h3 class="h5 fw-semibold mb-2">Python Kode Dec, 4</h3>
-                <p class="text-muted mb-0">Klikk for å åpne koden</p>
+                <h3 class="h5 fw-semibold mb-2">Python prosjekt</h3>
+                <p class="text-muted mb-0">Python kode.</p>
               </div>
             </div>
           </div>
@@ -139,7 +122,7 @@
               style="cursor: pointer"
             >
               <div class="card-body">
-                <h3 class="h5 fw-semibold mb-2">Min øve nettside som bruker boostrap og flexbox</h3>
+                <h3 class="h5 fw-semibold mb-2">Nettsiden min jeg brukte bootstrap og flexbox til</h3>
                 <p class="text-muted mb-0">Klikk for å se prosjektet</p>
               </div>
             </div>
@@ -150,164 +133,86 @@
       <!-- Messaging app section -->
       <section id="app-area" class="d-none">
         <header class="d-flex align-items-center justify-content-between mb-3">
-          <h2 class="h5 fw-bold mb-0">Kortmeldinger</h2>
+          <h2 class="h5 fw-bold mb-0">Meldinger</h2>
           <button
             id="back-to-portfolio"
             class="btn btn-sm btn-outline-secondary"
           >
-            Til hovedside
+            Tilbake
           </button>
         </header>
 
-        <section id="admin-area" class="d-none mb-4">
-          <div
-            class="alert alert-warning d-flex justify-content-between align-items-center"
-          >
-            <div><strong>Admin:</strong> Du er logget inn som admin.</div>
-            <div class="d-flex gap-2">
-              <button id="refresh-btn" class="btn btn-sm btn-outline-dark">
-                Oppdater meldinger
-              </button>
-              <button id="clear-btn" class="btn btn-sm btn-outline-danger">
-                Tøm meldinger
-              </button>
-            </div>
+        <div id="admin-area" class="alert alert-warning mb-3 d-none">
+          <div class="d-flex gap-2">
+            <button id="refresh-btn" class="btn btn-sm btn-outline-warning">
+              Oppdater
+            </button>
+            <button id="clear-btn" class="btn btn-sm btn-outline-danger">
+              Tøm meldinger
+            </button>
           </div>
-        </section>
+        </div>
 
-        <div class="row g-4">
-          <div class="col-12 col-lg-5">
-            <div class="card card-elev shadow-sm">
-              <div class="card-body">
-                <h3 class="h6 mb-3">Send inn</h3>
-                <form id="form" class="needs-validation" novalidate>
-                  <div class="mb-3">
-                    <label class="form-label" for="name">Navn</label>
-                    <input
-                      id="name"
-                      class="form-control bg-light"
-                      minlength="2"
-                      maxlength="30"
-                      required
-                      readonly
-                    />
-                    <div class="invalid-feedback">
-                      Navnet fylles inn etter innlogging.
-                    </div>
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label" for="content">Kort melding</label>
-                    <input
-                      id="content"
-                      class="form-control"
-                      maxlength="140"
-                      required
-                      placeholder="Hei verden! (maks 140 tegn)"
-                    />
-                  </div>
-                  <button class="btn btn-primary w-100" type="submit">
-                    Lagre
-                  </button>
-                  <div id="status" class="form-text mt-2 muted">Klar</div>
-                </form>
+        <div class="card card-elev mb-3">
+          <div class="card-body">
+            <form id="form" novalidate>
+              <div class="mb-2">
+                <label for="name" class="form-label">Ditt navn</label>
+                <input type="text" class="form-control" id="name" readonly />
               </div>
-            </div>
+              <div class="mb-2">
+                <label for="content" class="form-label">Melding</label>
+                <textarea
+                  class="form-control"
+                  id="content"
+                  rows="3"
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+            <div id="status" class="mt-2 text-muted small"></div>
           </div>
+        </div>
 
-          <div class="col-12 col-lg-7">
-            <div class="card card-elev shadow-sm">
-              <div class="card-body">
-                <div
-                  class="d-flex align-items-center justify-content-between mb-2"
-                >
-                  <h3 class="h6 mb-0">Meldinger</h3>
-                  <span class="badge text-bg-light"
-                    ><span id="count">0</span> stk</span
-                  >
-                </div>
-                <div id="msgs" class="d-grid gap-2"></div>
-              </div>
-            </div>
+        <div class="card card-elev">
+          <div class="card-body">
+            <h3 class="h5 fw-semibold mb-3">
+              Meldinger (<span id="count">0</span>)
+            </h3>
+            <div id="msgs" class="d-flex flex-column gap-2"></div>
           </div>
         </div>
       </section>
 
+      <!-- Account drawer -->
       <div id="account-drawer" class="account-drawer">
         <div id="account-drawer-overlay" class="account-drawer__overlay"></div>
-        <aside class="account-drawer__panel card-elev">
+        <div class="account-drawer__panel">
           <div class="account-drawer__header">
-            <h2 class="h6 mb-0">Min side</h2>
-            <button
-              id="close-drawer-btn"
-              type="button"
-              class="btn btn-outline-secondary btn-sm btn-rounded"
-            >
-              &times;
-            </button>
+            <h3 class="h6 fw-bold mb-0">Min konto</h3>
+            <button id="close-drawer-btn" class="btn btn-sm btn-close"></button>
           </div>
           <div class="account-drawer__body">
-            <p class="small text-muted mb-1">Innlogget som</p>
-            <div class="fw-semibold" id="drawer-email">Gjest</div>
-            <p class="small text-muted mt-3 mb-1">Rolle</p>
-            <div id="drawer-role">Bruker</div>
-            <button
-              id="drawer-logout-btn"
-              type="button"
-              class="btn btn-primary w-100 mt-auto btn-rounded"
-              disabled
-            >
+            <div class="mb-3">
+              <small class="text-muted">E-post</small>
+              <div id="drawer-email" class="text-break fw-semibold">—</div>
+            </div>
+            <div class="mb-3">
+              <small class="text-muted">rolle</small>
+              <div id="drawer-role" class="fw-semibold">—</div>
+            </div>
+            <button id="drawer-logout-btn" class="btn btn-outline-danger w-100">
               Logg ut
             </button>
-          </div>
-        </aside>
-      </div>
-
-      <!-- Code modal -->
-      <div
-        id="code-modal"
-        class="d-none position-fixed top-0 start-0 w-100 h-100"
-        style="z-index: 2000"
-      >
-        <div
-          id="code-modal-overlay"
-          class="position-absolute inset-0"
-          style="background: rgba(0, 0, 0, 0.5)"
-        ></div>
-        <div
-          class="card card-elev position-relative mx-auto"
-          style="width: min(900px, 95%); margin-top: 5vh"
-        >
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
-              <h5 id="code-modal-title" class="mb-2">Python Kode Dec, 4</h5>
-              <button
-                id="code-modal-close"
-                class="btn btn-sm btn-outline-secondary"
-              >
-                &times;
-              </button>
-            </div>
-            <pre
-              style="
-                background: #0b1220;
-                color: #e6eef8;
-                padding: 1rem;
-                border-radius: 0.5rem;
-                overflow: auto;
-                max-height: 60vh;
-                margin: 0.5rem 0;
-              "
-            >
-              <code id="code-modal-content" style="white-space:pre-wrap;display:block;"></code>
-            </pre>
           </div>
         </div>
       </div>
 
-      <!-- Project 2 page (opens like Meldinger, not a modal) -->
+      <!-- Project 2 page -->
       <section id="project2-area" class="d-none">
         <header class="d-flex align-items-center justify-content-between mb-3">
-          <h2 class="h5 fw-bold mb-0">Python Kode Dec, 4</h2>
+          <h2 class="h5 fw-bold mb-0">Python Kode</h2>
           <button
             id="project2-back-btn"
             class="btn btn-sm btn-outline-secondary"
@@ -319,7 +224,6 @@
         <div class="card card-elev">
           <div class="card-body">
             <pre
-              class="code-block"
               style="
                 background: #ffffff;
                 color: #000000;
@@ -359,7 +263,7 @@
       <!-- Project 4 page (iframe view) -->
       <section id="project4-area" class="d-none">
         <header class="d-flex align-items-center justify-content-between mb-3">
-          <h2 class="h5 fw-bold mb-0">Min øve nettside som bruker boostrap og flexbox</h2>
+          <h2 class="h5 fw-bold mb-0">Nettsiden min jeg brukte bootstrap og flexbox til</h2>
           <button
             id="project4-back-btn"
             class="btn btn-sm btn-outline-secondary"
@@ -387,6 +291,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="./app.js"></script>
+    <script type="module" src="./js/app.js"></script>
   </body>
 </html>
